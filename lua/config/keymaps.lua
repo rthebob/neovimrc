@@ -7,8 +7,9 @@ local opts = { noremap = true, silent = true }
 local Util = require("lazyvim.util")
 local map = Util.safe_keymap_set
 
-keymap.set("n", "+", "<C-a")
-keymap.set("n", "-", "C-x")
+-- Increment/decrement
+keymap.set("n", "=", "<C-a>")
+keymap.set("n", "-", "<C-x>")
 
 -- Delete a word backwards
 keymap.set("n", "dw", 'vb"_d')
