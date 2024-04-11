@@ -6,6 +6,39 @@ local keymap = vim.keymap
 local opts = { noremap = true, silent = true }
 local Util = require("lazyvim.util")
 local map = Util.safe_keymap_set
+local harpoon = require("harpoon")
+
+-- REQUIRED
+harpoon:setup()
+-- REQUIRED
+
+keymap.set("n", "<leader>a", function()
+  harpoon:list():append()
+end)
+keymap.set("n", "<C-e>", function()
+  harpoon.ui:toggle_quick_menu(harpoon:list())
+end)
+
+keymap.set("n", "<C-h>", function()
+  harpoon:list():select(1)
+end)
+keymap.set("n", "<C-t>", function()
+  harpoon:list():select(2)
+end)
+keymap.set("n", "<C-n>", function()
+  harpoon:list():select(3)
+end)
+keymap.set("n", "<C-s>", function()
+  harpoon:list():select(4)
+end)
+
+-- Toggle previous & next buffers stored within Harpoon list
+keymap.set("n", "<leader>p", function()
+  harpoon:list():prev()
+end)
+keymap.set("n", "<leader>n", function()
+  harpoon:list():next()
+end)
 
 -- Increment/decrement
 keymap.set("n", "=", "<C-a>")
@@ -70,4 +103,16 @@ keymap.set("n", "<C-j>", function()
 end, opts)
 
 -- Toggle Terminal
-keymap.set("n", "<leader>v", ":ToggleTerm<CR>", {})
+keymap.set("n", "<leader>1", ":ToggleTerm 1<CR>")
+keymap.set("n", "<leader>2", ":ToggleTerm 2<CR>")
+keymap.set("n", "<leader>v", ":ToggleTerm<CR>")
+
+-- Gitsigns
+keymap.set("n", "<leader>gp", ":Gitsigns preview_hunk<CR>", {})
+
+-- Toggle virtual_text diagnostic
+keymap.set("n", "tt", function()
+  local current_config = vim.diagnostic.config()
+  current_config.virtual_text = not current_config.virtual_text
+  vim.diagnostic.config(current_config)
+end)
