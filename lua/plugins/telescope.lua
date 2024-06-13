@@ -99,6 +99,46 @@ return {
         end,
         desc = "Open File Browser with the path of the current buffer",
       },
+      {
+        "<leader>gb", -- Key mapping for listing Git branches
+        function()
+          -- Function to list Git branches from origin
+          local function git_branches()
+            -- Load Telescope and other required modules
+            local actions = require("telescope.actions")
+            local action_state = require("telescope.actions.state")
+            local pickers = require("telescope.pickers")
+            local finders = require("telescope.finders")
+            local conf = require("telescope.config").values
+
+            -- Define custom git checkout action
+            local function custom_git_checkout(prompt_bufnr)
+              local selected_entry = action_state.get_selected_entry()
+              local branch_name = selected_entry.value:match("origin/(.*)")
+              actions.close(prompt_bufnr)
+              -- Perform the git checkout using the branch name
+              vim.cmd("Git checkout " .. branch_name)
+            end
+
+            pickers
+              .new({}, {
+                prompt_title = "Git Branches",
+                finder = finders.new_oneshot_job({ "git", "branch", "--remotes", "--list", "origin/*" }, {}),
+                sorter = conf.generic_sorter({}),
+                attach_mappings = function(_, map)
+                  map("i", "<CR>", custom_git_checkout)
+                  map("n", "<CR>", custom_git_checkout)
+                  return true
+                end,
+              })
+              :find()
+          end
+
+          -- Call the function to list Git branches
+          git_branches()
+        end,
+        desc = "List Git branches from origin",
+      },
     },
     config = function(_, opts)
       local telescope = require("telescope")

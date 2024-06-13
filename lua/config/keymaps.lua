@@ -76,10 +76,10 @@ keymap.set("n", "N", "Nzzzv")
 keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
 -- Resize window
-keymap.set("n", "<C-w><left>", "<C-w><")
-keymap.set("n", "<C-w><right>", "<C-w>>")
-keymap.set("n", "<C-w><up>", "<C-w>+")
-keymap.set("n", "<C-w><down>", "<C-w>-")
+keymap.set("n", "<C-w><left>", ":vertical resize -5<CR>")
+keymap.set("n", "<C-w><right>", ":vertical resize +5<CR>")
+keymap.set("n", "<C-w><up>", ":horizontal resize -1<CR>")
+keymap.set("n", "<C-w><down>", ":horizontal resize +1<CR>")
 
 -- Move lines
 keymap.set("n", "<A-j>", ":m +1<CR>", {}) -- moves down 1 line
@@ -116,3 +116,13 @@ keymap.set("n", "tt", function()
   current_config.virtual_text = not current_config.virtual_text
   vim.diagnostic.config(current_config)
 end)
+
+-- Undo tree
+keymap.set("n", "<leader>u", ":UndotreeToggle<CR>")
+
+-- Copilot
+local mapCopilot = vim.keymap.set
+mapCopilot("i", "<C-J>", 'copilot#Accept("<CR>")', { silent = true, expr = true, replace_keycodes = false })
+mapCopilot("i", "<C-K>", "copilot#Cancel()", { silent = true, expr = true, replace_keycodes = false })
+mapCopilot("i", "<C-L>", "copilot#Next()", { silent = true, expr = true, replace_keycodes = false })
+mapCopilot("i", "<C-H>", "copilot#Previous()", { silent = true, expr = true, replace_keycodes = false })
